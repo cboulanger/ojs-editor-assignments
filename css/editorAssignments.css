@@ -1,0 +1,28 @@
+/**
+ * plugins/generic/editorAssignments/css/editorAssignments.css
+ *
+ * Distributed under the GNU GPL v3. For full terms see the file LICENSE.
+ */
+.erPanel { padding: 1rem 1.5rem; }
+.erHint, .erCount, .erStage { color: #666; font-size: 0.875rem; }
+.erTable, .erSubTable { width: 100%; border-collapse: collapse; }
+.erTable > thead > tr > th, .erTable > tbody > tr > td { padding: 0.75rem 0.5rem; border-bottom: 1px solid #ddd; text-align: left; vertical-align: top; }
+.erTable > thead > tr > th { border-bottom: 2px solid #ccc; }
+.erEditorCol { width: 14rem; }
+.erUnassigned > td { background: #fff8e5; }
+.erSubTable th, .erSubTable td { padding: 0.35rem 0.5rem; border-bottom: 1px solid #eee; text-align: left; vertical-align: top; font-size: 0.875rem; }
+.erSubTable thead th { font-weight: 600; color: #444; }
+.erSubTable tbody tr:last-child td { border-bottom: none; }
+.erIdCol { width: 3.5rem; white-space: nowrap; }
+.erAuthorsCol { width: 12rem; }
+.erActionsCol { width: 9rem; }
+.erActionsCol > a, .erActionsCol > form { display: block; margin-bottom: 0.2rem; }
+.erInline { margin: 0; }
+.erLinkButton { background: none; border: none; padding: 0; font: inherit; color: #006798; text-decoration: underline; cursor: pointer; }
+.erDanger { color: #d00a0a; }
+.erForm { max-width: 50rem; }
+.erField { margin-bottom: 1rem; }
+.erLabel { display: block; font-weight: 600; margin-bottom: 0.25rem; }
+.erForm input[type="text"], .erForm textarea, .erForm select { width: 100%; box-sizing: border-box; padding: 0.4rem; font: inherit; }
+.erCheckbox { display: block; }
+.erButtons { display: flex; gap: 1rem; align-items: center; }

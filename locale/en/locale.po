@@ -1,0 +1,119 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en\n"
+
+msgid "plugins.generic.editorAssignments.displayName"
+msgstr "Editor Assignments"
+
+msgid "plugins.generic.editorAssignments.description"
+msgstr "Shows journal managers which editor is assigned to which active submission, with links to email an editor, transfer a submission to another editor and remove an assignment."
+
+msgid "plugins.generic.editorAssignments.title"
+msgstr "Editor assignments"
+
+msgid "plugins.generic.editorAssignments.intro"
+msgstr "Active submissions (not yet published or declined): {$total}. Listed are all section editors and everybody else who is assigned as editor."
+
+msgid "plugins.generic.editorAssignments.empty"
+msgstr "There are no editors and no active submissions."
+
+msgid "plugins.generic.editorAssignments.editor"
+msgstr "Editor"
+
+msgid "plugins.generic.editorAssignments.submissions"
+msgstr "Submissions"
+
+msgid "plugins.generic.editorAssignments.actions"
+msgstr "Actions"
+
+msgid "plugins.generic.editorAssignments.count"
+msgstr "Submissions: {$number}"
+
+msgid "plugins.generic.editorAssignments.noEditor"
+msgstr "No editor assigned"
+
+msgid "plugins.generic.editorAssignments.notFound"
+msgstr "The submission or the editor's assignment was not found. It may have changed in the meantime."
+
+msgid "plugins.generic.editorAssignments.action.email"
+msgstr "Email editor"
+
+msgid "plugins.generic.editorAssignments.action.transfer"
+msgstr "Transfer to other editor"
+
+msgid "plugins.generic.editorAssignments.action.remove"
+msgstr "Remove assignment"
+
+msgid "plugins.generic.editorAssignments.action.assign"
+msgstr "Assign editor"
+
+msgid "plugins.generic.editorAssignments.email.title"
+msgstr "Email editor"
+
+msgid "plugins.generic.editorAssignments.email.defaultSubject"
+msgstr "Submission {$submissionId}: {$title}"
+
+msgid "plugins.generic.editorAssignments.email.defaultBody"
+msgstr "Dear {$editorName},\n\nregarding submission {$submissionId}, \"{$title}\" by {$authors}:\n{$url}\n\n\n\nBest regards,\n{$senderName}"
+
+msgid "plugins.generic.editorAssignments.email.copyToSender"
+msgstr "Send me a copy"
+
+msgid "plugins.generic.editorAssignments.email.send"
+msgstr "Send email"
+
+msgid "plugins.generic.editorAssignments.email.empty"
+msgstr "Please enter a subject and a message."
+
+msgid "plugins.generic.editorAssignments.email.sent"
+msgstr "The email to {$name} has been sent."
+
+msgid "plugins.generic.editorAssignments.transfer.title"
+msgstr "Transfer to other editor"
+
+msgid "plugins.generic.editorAssignments.transfer.from"
+msgstr "Current editor"
+
+msgid "plugins.generic.editorAssignments.transfer.to"
+msgstr "New editor"
+
+msgid "plugins.generic.editorAssignments.transfer.choose"
+msgstr "Choose an editor"
+
+msgid "plugins.generic.editorAssignments.transfer.chooseEditor"
+msgstr "Please choose an editor who is not yet assigned to this submission."
+
+msgid "plugins.generic.editorAssignments.transfer.noCandidates"
+msgstr "There is no other user with the role journal manager or section editor."
+
+msgid "plugins.generic.editorAssignments.transfer.notify"
+msgstr "Notify the new editor with the email \"Editor assigned\" (Settings › Emails)"
+
+msgid "plugins.generic.editorAssignments.transfer.hint"
+msgstr "The new editor is assigned in the same role as the current editor if they have it, otherwise as section editor or journal manager. The current editor is removed from the submission's editors. Both changes appear in the submission's activity log."
+
+msgid "plugins.generic.editorAssignments.transfer.submit"
+msgstr "Transfer"
+
+msgid "plugins.generic.editorAssignments.transfer.done"
+msgstr "Submission {$submissionId} has been transferred from {$from} to {$to}."
+
+msgid "plugins.generic.editorAssignments.assign.title"
+msgstr "Assign editor"
+
+msgid "plugins.generic.editorAssignments.assign.submit"
+msgstr "Assign"
+
+msgid "plugins.generic.editorAssignments.assign.done"
+msgstr "{$name} has been assigned to submission {$submissionId}."
+
+msgid "plugins.generic.editorAssignments.remove.confirm"
+msgstr "Remove this editor from submission {$submissionId}?"
+
+msgid "plugins.generic.editorAssignments.remove.done"
+msgstr "{$name} has been removed from submission {$submissionId}."
+
+msgid "plugins.generic.editorAssignments.remove.noEditorLeft"
+msgstr "The submission has no editor now."

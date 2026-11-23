@@ -1,0 +1,119 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+
+msgid "plugins.generic.editorAssignments.displayName"
+msgstr "Redakteurszuständigkeiten"
+
+msgid "plugins.generic.editorAssignments.description"
+msgstr "Zeigt Zeitschriftenverwalter/innen, welche/r Redakteur/in welcher laufenden Einreichung zugewiesen ist, mit Links, um eine/n Redakteur/in anzuschreiben, eine Einreichung an andere zu übergeben und eine Zuweisung aufzuheben."
+
+msgid "plugins.generic.editorAssignments.title"
+msgstr "Zuständigkeiten"
+
+msgid "plugins.generic.editorAssignments.intro"
+msgstr "Laufende Einreichungen (weder veröffentlicht noch abgelehnt): {$total}. Aufgeführt sind alle Rubrikredakteur/innen und alle anderen, die als Redakteur/in zugewiesen sind."
+
+msgid "plugins.generic.editorAssignments.empty"
+msgstr "Es gibt weder Redakteur/innen noch laufende Einreichungen."
+
+msgid "plugins.generic.editorAssignments.editor"
+msgstr "Redakteur/in"
+
+msgid "plugins.generic.editorAssignments.submissions"
+msgstr "Einreichungen"
+
+msgid "plugins.generic.editorAssignments.actions"
+msgstr "Aktionen"
+
+msgid "plugins.generic.editorAssignments.count"
+msgstr "Einreichungen: {$number}"
+
+msgid "plugins.generic.editorAssignments.noEditor"
+msgstr "Ohne Redakteur/in"
+
+msgid "plugins.generic.editorAssignments.notFound"
+msgstr "Die Einreichung oder die Zuweisung wurde nicht gefunden. Möglicherweise wurde sie inzwischen geändert."
+
+msgid "plugins.generic.editorAssignments.action.email"
+msgstr "E-Mail an Redakteur/in"
+
+msgid "plugins.generic.editorAssignments.action.transfer"
+msgstr "An andere/n übergeben"
+
+msgid "plugins.generic.editorAssignments.action.remove"
+msgstr "Zuweisung aufheben"
+
+msgid "plugins.generic.editorAssignments.action.assign"
+msgstr "Redakteur/in zuweisen"
+
+msgid "plugins.generic.editorAssignments.email.title"
+msgstr "E-Mail an Redakteur/in"
+
+msgid "plugins.generic.editorAssignments.email.defaultSubject"
+msgstr "Einreichung {$submissionId}: {$title}"
+
+msgid "plugins.generic.editorAssignments.email.defaultBody"
+msgstr "Liebe/r {$editorName},\n\nzur Einreichung {$submissionId}, „{$title}“ von {$authors}:\n{$url}\n\n\n\nViele Grüße\n{$senderName}"
+
+msgid "plugins.generic.editorAssignments.email.copyToSender"
+msgstr "Kopie an mich"
+
+msgid "plugins.generic.editorAssignments.email.send"
+msgstr "E-Mail senden"
+
+msgid "plugins.generic.editorAssignments.email.empty"
+msgstr "Bitte geben Sie einen Betreff und eine Nachricht ein."
+
+msgid "plugins.generic.editorAssignments.email.sent"
+msgstr "Die E-Mail an {$name} wurde gesendet."
+
+msgid "plugins.generic.editorAssignments.transfer.title"
+msgstr "An andere/n Redakteur/in übergeben"
+
+msgid "plugins.generic.editorAssignments.transfer.from"
+msgstr "Bisherige/r Redakteur/in"
+
+msgid "plugins.generic.editorAssignments.transfer.to"
+msgstr "Neue/r Redakteur/in"
+
+msgid "plugins.generic.editorAssignments.transfer.choose"
+msgstr "Redakteur/in auswählen"
+
+msgid "plugins.generic.editorAssignments.transfer.chooseEditor"
+msgstr "Bitte wählen Sie eine/n Redakteur/in, die/der dieser Einreichung noch nicht zugewiesen ist."
+
+msgid "plugins.generic.editorAssignments.transfer.noCandidates"
+msgstr "Es gibt keine weiteren Nutzer/innen mit der Rolle Zeitschriftenverwalter/in oder Rubrikredakteur/in."
+
+msgid "plugins.generic.editorAssignments.transfer.notify"
+msgstr "Neue/n Redakteur/in mit der E-Mail „Redakteur/in zugewiesen“ benachrichtigen (Einstellungen › E-Mails)"
+
+msgid "plugins.generic.editorAssignments.transfer.hint"
+msgstr "Die/der neue Redakteur/in wird in derselben Rolle zugewiesen wie die/der bisherige, wenn sie/er diese Rolle hat, sonst als Rubrikredakteur/in oder Zeitschriftenverwalter/in. Die/der bisherige Redakteur/in wird aus den Redakteur/innen der Einreichung entfernt. Beide Änderungen erscheinen im Verlauf der Einreichung."
+
+msgid "plugins.generic.editorAssignments.transfer.submit"
+msgstr "Übergeben"
+
+msgid "plugins.generic.editorAssignments.transfer.done"
+msgstr "Einreichung {$submissionId} wurde von {$from} an {$to} übergeben."
+
+msgid "plugins.generic.editorAssignments.assign.title"
+msgstr "Redakteur/in zuweisen"
+
+msgid "plugins.generic.editorAssignments.assign.submit"
+msgstr "Zuweisen"
+
+msgid "plugins.generic.editorAssignments.assign.done"
+msgstr "{$name} wurde Einreichung {$submissionId} zugewiesen."
+
+msgid "plugins.generic.editorAssignments.remove.confirm"
+msgstr "Diese/n Redakteur/in von Einreichung {$submissionId} entfernen?"
+
+msgid "plugins.generic.editorAssignments.remove.done"
+msgstr "{$name} wurde von Einreichung {$submissionId} entfernt."
+
+msgid "plugins.generic.editorAssignments.remove.noEditorLeft"
+msgstr "Die Einreichung hat jetzt keine/n Redakteur/in mehr."
