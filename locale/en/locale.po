@@ -92,7 +92,7 @@ msgid "plugins.generic.editorAssignments.transfer.notify"
 msgstr "Notify the new editor with the email \"Editor assigned\" (Settings › Emails)"
 
 msgid "plugins.generic.editorAssignments.transfer.hint"
-msgstr "The new editor is assigned in the same role as the current editor if they have it, otherwise as section editor or journal manager. The current editor is removed from the submission's editors. Both changes appear in the submission's activity log."
+msgstr "The new editor is assigned in the same role as the current editor if they have it, otherwise (unless \"Show all assignments\" is checked) as journal editor, otherwise as section editor or journal manager. The current editor is removed from the submission's editors. Both changes appear in the submission's activity log."
 
 msgid "plugins.generic.editorAssignments.transfer.submit"
 msgstr "Transfer"
@@ -117,3 +117,15 @@ msgstr "{$name} has been removed from submission {$submissionId}."
 
 msgid "plugins.generic.editorAssignments.remove.noEditorLeft"
 msgstr "The submission has no editor now."
+
+msgid "plugins.generic.editorAssignments.showAll"
+msgstr "Show all assignments"
+
+msgid "plugins.generic.editorAssignments.introJournalEditors"
+msgstr "Active submissions (not yet published or declined): {$total}. Listed are the journal editors; check \"Show all assignments\" to see all section editors and everybody else assigned as editor."
+
+msgid "plugins.generic.editorAssignments.noJournalEditor"
+msgstr "No journal editor assigned"
+
+msgid "plugins.generic.editorAssignments.otherEditors"
+msgstr "Editors: {$names}"

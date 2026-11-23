@@ -32,6 +32,9 @@ class Assignments
 {
     const EDITOR_ROLES = [Role::ROLE_ID_MANAGER, Role::ROLE_ID_SUB_EDITOR];
 
+    /** Locale key of the name of OJS's default user group "Journal editor" */
+    const JOURNAL_EDITOR_KEY = 'default.groups.name.editor';
+
     /**
      * Submissions in the editorial workflow: completed, neither published nor declined.
      * @return Submission[] by id
@@ -71,17 +74,43 @@ class Assignments
     }
 
     /**
+     * The journal's "Journal editor" user groups: OJS's default group of that name
+     * (identified by its locale key, so renaming it doesn't matter), or a Journal manager
+     * group named like it in one of its locales.
+     * @return int[]
+     */
+    public static function journalEditorGroupIds(int $contextId): array
+    {
+        $ids = [];
+        foreach (UserGroup::withContextIds([$contextId])->withRoleIds([Role::ROLE_ID_MANAGER])->get() as $group) {
+            $matches = ($group->nameLocaleKey ?? null) === self::JOURNAL_EDITOR_KEY;
+            foreach ((array) $group->name as $locale => $name) {
+                $matches = $matches || ($name !== '' && $name === __(self::JOURNAL_EDITOR_KEY, [], $locale));
+            }
+            if ($matches) {
+                $ids[] = (int) $group->getKey();
+            }
+        }
+        return $ids;
+    }
+
+    /**
      * Users who can be assigned as editors: active users with the role Journal manager
-     * or Section editor in the journal.
+     * or Section editor in the journal; with $userGroupIds only members of these groups.
      * @param int[] $roleIds
+     * @param ?int[] $userGroupIds
      * @return array userId => full name, sorted by name
      */
-    public static function candidates(int $contextId, array $roleIds = self::EDITOR_ROLES): array
+    public static function candidates(int $contextId, array $roleIds = self::EDITOR_ROLES, ?array $userGroupIds = null): array
     {
         $users = [];
+        if ($userGroupIds === []) {
+            return $users;
+        }
         $collector = Repo::user()->getCollector()
             ->filterByContextIds([$contextId])
-            ->filterByRoleIds($roleIds);
+            ->filterByRoleIds($roleIds)
+            ->filterByUserGroupIds($userGroupIds);
         foreach ($collector->getMany() as $user) {
             $users[$user->getId()] = $user->getFullName();
         }
@@ -95,11 +124,12 @@ class Assignments
     }
 
     /**
-     * Assign a user as editor of a submission. The user group is the one given (when the
-     * user is a member), else their Section editor group, else their Journal manager group.
+     * Assign a user as editor of a submission. The user group is the first of the preferred
+     * ones the user is a member of, else their Section editor group, else their Journal manager group.
+     * @param int[] $preferredGroupIds
      * @return bool false if the user has no editor role in the journal
      */
-    public static function assign(Submission $submission, User $editor, ?int $preferredGroupId = null): bool
+    public static function assign(Submission $submission, User $editor, array $preferredGroupIds = []): bool
     {
         $contextId = (int) $submission->getData('contextId');
         $groups = UserGroup::withContextIds([$contextId])
@@ -109,8 +139,11 @@ class Assignments
         if ($groups->isEmpty()) {
             return false;
         }
-        $group = $groups->first(fn ($g) => (int) $g->getKey() === $preferredGroupId)
-            ?? $groups->first(fn ($g) => (int) $g->roleId === Role::ROLE_ID_SUB_EDITOR)
+        $group = null;
+        foreach ($preferredGroupIds as $groupId) {
+            $group ??= $groups->first(fn ($g) => (int) $g->getKey() === (int) $groupId);
+        }
+        $group ??= $groups->first(fn ($g) => (int) $g->roleId === Role::ROLE_ID_SUB_EDITOR)
             ?? $groups->first();
         $existing = StageAssignment::withSubmissionIds([$submission->getId()])->withUserId($editor->getId())
             ->withUserGroupId((int) $group->getKey())->exists();

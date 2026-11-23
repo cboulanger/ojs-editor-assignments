@@ -10,7 +10,14 @@
 {block name="page"}
 <h1 class="app__pageHeading">{$pageTitle|escape}</h1>
 <div class="app__contentPanel erPanel" v-pre>
-	<p class="erHint">{translate key="plugins.generic.editorAssignments.intro" total=$total}</p>
+	{if $canFilter}
+		<form method="get" action="{url page=$erPage}" class="erFilter" data-er-autosubmit>
+			<input type="hidden" name="filter" value="1" />
+			<label><input type="checkbox" name="showAll" value="1" {if $showAll}checked{/if} /> {translate key="plugins.generic.editorAssignments.showAll"}</label>
+			<noscript><button type="submit" class="pkp_button">{translate key="common.apply"}</button></noscript>
+		</form>
+	{/if}
+	<p class="erHint">{if $showAll}{translate key="plugins.generic.editorAssignments.intro" total=$total}{else}{translate key="plugins.generic.editorAssignments.introJournalEditors" total=$total}{/if}</p>
 	{if !$rows && !$unassigned}
 		<p>{translate key="plugins.generic.editorAssignments.empty"}</p>
 	{else}
@@ -40,7 +47,7 @@
 				{if $unassigned}
 					<tr id="editor-0" class="erUnassigned">
 						<td class="erEditorCol">
-							<strong>{translate key="plugins.generic.editorAssignments.noEditor"}</strong>
+							<strong>{if $showAll}{translate key="plugins.generic.editorAssignments.noEditor"}{else}{translate key="plugins.generic.editorAssignments.noJournalEditor"}{/if}</strong>
 							<div class="erCount">{translate key="plugins.generic.editorAssignments.count" number=$unassignedCount}</div>
 						</td>
 						<td>{include file=$erSubmissionsTable submissions=$unassigned editorId=0}</td>

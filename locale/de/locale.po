@@ -92,7 +92,7 @@ msgid "plugins.generic.editorAssignments.transfer.notify"
 msgstr "Neue/n Redakteur/in mit der E-Mail „Redakteur/in zugewiesen“ benachrichtigen (Einstellungen › E-Mails)"
 
 msgid "plugins.generic.editorAssignments.transfer.hint"
-msgstr "Die/der neue Redakteur/in wird in derselben Rolle zugewiesen wie die/der bisherige, wenn sie/er diese Rolle hat, sonst als Rubrikredakteur/in oder Zeitschriftenverwalter/in. Die/der bisherige Redakteur/in wird aus den Redakteur/innen der Einreichung entfernt. Beide Änderungen erscheinen im Verlauf der Einreichung."
+msgstr "Die/der neue Redakteur/in wird in derselben Rolle zugewiesen wie die/der bisherige, wenn sie/er diese Rolle hat, sonst (außer bei „Alle Zuweisungen anzeigen“) als Zeitschriftenredakteur/in, sonst als Rubrikredakteur/in oder Zeitschriftenverwalter/in. Die/der bisherige Redakteur/in wird aus den Redakteur/innen der Einreichung entfernt. Beide Änderungen erscheinen im Verlauf der Einreichung."
 
 msgid "plugins.generic.editorAssignments.transfer.submit"
 msgstr "Übergeben"
@@ -117,3 +117,15 @@ msgstr "{$name} wurde von Einreichung {$submissionId} entfernt."
 
 msgid "plugins.generic.editorAssignments.remove.noEditorLeft"
 msgstr "Die Einreichung hat jetzt keine/n Redakteur/in mehr."
+
+msgid "plugins.generic.editorAssignments.showAll"
+msgstr "Alle Zuweisungen anzeigen"
+
+msgid "plugins.generic.editorAssignments.introJournalEditors"
+msgstr "Laufende Einreichungen (weder veröffentlicht noch abgelehnt): {$total}. Aufgeführt sind die Zeitschriftenredakteur/innen; mit „Alle Zuweisungen anzeigen“ auch alle Rubrikredakteur/innen und alle anderen, die als Redakteur/in zugewiesen sind."
+
+msgid "plugins.generic.editorAssignments.noJournalEditor"
+msgstr "Ohne Zeitschriftenredakteur/in"
+
+msgid "plugins.generic.editorAssignments.otherEditors"
+msgstr "Redakteur/innen: {$names}"

@@ -36,6 +36,9 @@ class EditorAssignmentsHandler extends Handler
 
     const OPS = ['index', 'compose', 'send', 'transfer', 'saveTransfer', 'remove'];
 
+    /** Session key: "Show all assignments" is checked */
+    const SESSION_SHOW_ALL = 'editorAssignments.showAll';
+
     public $_isBackendPage = true;
 
     /** @var \APP\plugins\generic\editorAssignments\EditorAssignmentsPlugin */
@@ -57,23 +60,38 @@ class EditorAssignmentsHandler extends Handler
     /* ---------- Overview ---------- */
 
     /**
-     * One row per editor with the submissions they are assigned to. Listed are the users
-     * with the role Section editor and everybody else assigned as editor (e.g. journal
-     * managers), followed by the submissions without editor.
+     * One row per editor with the submissions they are assigned to, followed by the
+     * submissions without editor. Listed are
+     *  - by default: the members of the group "Journal editor"; the last row has the
+     *    submissions without a journal editor (with the names of their other editors);
+     *  - with "Show all assignments": the users with the role Section editor and everybody
+     *    else assigned as editor (e.g. journal managers); the last row has the submissions
+     *    without any editor.
+     * The checkbox is remembered for the session, so that the actions return to the same view.
      */
     public function index($args, $request)
     {
         $context = $request->getContext();
+        if ($request->getUserVar('filter') !== null) {
+            $request->getSession()->put(self::SESSION_SHOW_ALL, (bool) $request->getUserVar('showAll'));
+        }
+        $journalEditorGroupIds = Assignments::journalEditorGroupIds($context->getId());
+        $showAll = $this->showAll($request) || !$journalEditorGroupIds;
+
         $submissions = Assignments::activeSubmissions($context->getId());
         $editorsBySubmission = Assignments::editorsBySubmission(array_keys($submissions));
 
-        $names = Assignments::candidates($context->getId(), [Role::ROLE_ID_SUB_EDITOR]);
-        foreach (array_keys($editorsBySubmission) as $userId) {
-            if (!isset($names[$userId]) && ($user = Repo::user()->get($userId, true))) {
-                $names[$userId] = $user->getFullName();
+        if ($showAll) {
+            $names = Assignments::candidates($context->getId(), [Role::ROLE_ID_SUB_EDITOR]);
+            foreach (array_keys($editorsBySubmission) as $userId) {
+                if (!isset($names[$userId]) && ($user = Repo::user()->get($userId, true))) {
+                    $names[$userId] = $user->getFullName();
+                }
             }
+            asort($names, SORT_NATURAL | SORT_FLAG_CASE);
+        } else {
+            $names = Assignments::candidates($context->getId(), Assignments::EDITOR_ROLES, $journalEditorGroupIds);
         }
-        asort($names, SORT_NATURAL | SORT_FLAG_CASE);
 
         $rows = [];
         $assigned = [];
@@ -85,10 +103,22 @@ class EditorAssignmentsHandler extends Handler
             }
             $rows[] = ['id' => $userId, 'name' => $name, 'submissions' => $items, 'count' => count($items)];
         }
+
+        // Without (journal) editor; when filtered, with the names of the submission's other editors
+        $otherEditors = [];
+        if (!$showAll) {
+            foreach ($editorsBySubmission as $userId => $submissionIds) {
+                foreach (array_keys($submissionIds) as $submissionId) {
+                    if (!isset($assigned[$submissionId]) && ($user = Repo::user()->get($userId, true))) {
+                        $otherEditors[$submissionId][] = $user->getFullName();
+                    }
+                }
+            }
+        }
         $unassigned = [];
         foreach ($submissions as $submissionId => $submission) {
             if (!isset($assigned[$submissionId])) {
-                $unassigned[] = $this->submissionRow($submission);
+                $unassigned[] = $this->submissionRow($submission, $otherEditors[$submissionId] ?? []);
             }
         }
         return $this->display($request, 'index.tpl', [
@@ -96,10 +126,20 @@ class EditorAssignmentsHandler extends Handler
             'unassigned' => $unassigned,
             'unassignedCount' => count($unassigned),
             'total' => count($submissions),
+            'showAll' => $showAll,
+            'canFilter' => (bool) $journalEditorGroupIds,
         ]);
     }
 
-    protected function submissionRow(Submission $submission): array
+    protected function showAll($request): bool
+    {
+        return (bool) $request->getSession()->get(self::SESSION_SHOW_ALL, false);
+    }
+
+    /**
+     * @param string[] $otherEditors Names of the submission's editors not listed on the page
+     */
+    protected function submissionRow(Submission $submission, array $otherEditors = []): array
     {
         $publication = $submission->getCurrentPublication();
         return [
@@ -108,7 +148,22 @@ class EditorAssignmentsHandler extends Handler
             'title' => $publication?->getLocalizedFullTitle(null, 'html') ?? '',
             'stage' => $this->stageName((int) $submission->getData('stageId')),
             'url' => Repo::submission()->getWorkflowUrlByUserRoles($submission),
+            'otherEditors' => implode(', ', $otherEditors),
         ];
+    }
+
+    /**
+     * Possible new editors in the transfer form: like the overview, only journal editors
+     * unless "Show all assignments" is checked.
+     * @return array userId => name
+     */
+    protected function transferCandidates($request): array
+    {
+        $contextId = $request->getContext()->getId();
+        $groupIds = Assignments::journalEditorGroupIds($contextId);
+        return $this->showAll($request) || !$groupIds
+            ? Assignments::candidates($contextId)
+            : Assignments::candidates($contextId, Assignments::EDITOR_ROLES, $groupIds);
     }
 
     /* ---------- Email editor ---------- */
@@ -174,7 +229,7 @@ class EditorAssignmentsHandler extends Handler
     public function transfer($args, $request)
     {
         [$submission, $editor] = $this->requireAssignment($request, true);
-        $candidates = Assignments::candidates($request->getContext()->getId());
+        $candidates = $this->transferCandidates($request);
         foreach (array_keys($candidates) as $userId) {
             if (Assignments::isEditor($submission->getId(), $userId)) {
                 unset($candidates[$userId]);
@@ -197,15 +252,19 @@ class EditorAssignmentsHandler extends Handler
         [$submission, $editor] = $this->requireAssignment($request, true);
         $context = $request->getContext();
         $newEditorId = (int) $request->getUserVar('newEditorId');
-        $candidates = Assignments::candidates($context->getId());
+        $candidates = $this->transferCandidates($request);
         $newEditor = isset($candidates[$newEditorId]) ? Repo::user()->get($newEditorId) : null;
         if (!$newEditor || $newEditorId === $editor?->getId()) {
             $this->flash($request, __('plugins.generic.editorAssignments.transfer.chooseEditor'), Notification::NOTIFICATION_TYPE_ERROR);
             $request->redirect(null, self::PAGE, 'transfer', null,
                 ['submissionId' => $submission->getId(), 'editorId' => $editor?->getId() ?? 0]);
         }
-        $groupId = $editor ? Assignments::editorGroupId($submission->getId(), $editor->getId()) : null;
-        if (!Assignments::assign($submission, $newEditor, $groupId)) {
+        // Keep the previous editor's group; from the journal editors' view, prefer "Journal editor"
+        $groupIds = array_filter([$editor ? Assignments::editorGroupId($submission->getId(), $editor->getId()) : null]);
+        if (!$this->showAll($request)) {
+            $groupIds = array_merge($groupIds, Assignments::journalEditorGroupIds($context->getId()));
+        }
+        if (!Assignments::assign($submission, $newEditor, $groupIds)) {
             $this->flash($request, __('plugins.generic.editorAssignments.transfer.chooseEditor'), Notification::NOTIFICATION_TYPE_ERROR);
             $request->redirect(null, self::PAGE);
         }

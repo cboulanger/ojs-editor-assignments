@@ -4,6 +4,7 @@
  * Distributed under the GNU GPL v3. For full terms see the file LICENSE.
  */
 .erPanel { padding: 1rem 1.5rem; }
+.erFilter { margin-bottom: 0.75rem; }
 .erHint, .erCount, .erStage { color: #666; font-size: 0.875rem; }
 .erTable, .erSubTable { width: 100%; border-collapse: collapse; }
 .erTable > thead > tr > th, .erTable > tbody > tr > td { padding: 0.75rem 0.5rem; border-bottom: 1px solid #ddd; text-align: left; vertical-align: top; }

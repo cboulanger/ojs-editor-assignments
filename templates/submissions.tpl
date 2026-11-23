@@ -22,6 +22,7 @@
 				<td>
 					{if $submission.url}<a href="{$submission.url|escape}">{$submission.title|strip_unsafe_html}</a>{else}{$submission.title|strip_unsafe_html}{/if}
 					{if $submission.stage}<div class="erStage">{$submission.stage|escape}</div>{/if}
+					{if $submission.otherEditors}<div class="erStage">{translate key="plugins.generic.editorAssignments.otherEditors" names=$submission.otherEditors|escape}</div>{/if}
 				</td>
 				<td class="erActionsCol">
 					{if $editorId}

@@ -12,11 +12,13 @@ A left menu entry **Editor assignments** (journal managers and site admins) open
 | --- | --- |
 | Name, number of submissions | ID · Authors · Title (links to the workflow) · *Email editor* · *Transfer to other editor* · *Remove assignment* |
 
-- **Rows**: every user with the role Section editor, and everybody else who is assigned as editor of an active submission (for example journal managers). A last row lists the submissions **without editor**, with a link *Assign editor*.
+- **Rows**, by default: the members of the user group **Journal editor** (OJS's default group, recognised even if renamed). A last row lists the submissions **without a journal editor**, with the names of their other editors and a link *Assign editor*.
+- **Show all assignments** (checkbox at the top, remembered for the session): every user with the role Section editor (e.g. section, guest and book review editors), and everybody else who is assigned as editor of an active submission (for example journal managers or production editors). The last row then lists the submissions **without any editor**.
+- If the journal has no *Journal editor* group, the page always shows all assignments.
 - **Active submissions**: submitted, and neither published nor declined (status queued or scheduled).
 - **Editor** of a submission: a participant in a user group with the role Journal manager or Section editor, as in the *Editors* section of OJS's participants list.
 - **Email editor**: a form with a prefilled message (submission, authors, link to the workflow), sent from the manager's address, optionally with a copy to the manager. It is recorded in the submission's email log.
-- **Transfer to other editor**: choose a journal manager or section editor who is not yet assigned. The new editor is assigned in the same user group as the previous one if they belong to it, otherwise in their section editor group, otherwise in their journal manager group. The previous editor is then removed. Optionally the new editor gets OJS's email *Editor assigned* (`EDITOR_ASSIGN`, editable under *Settings › Emails*).
+- **Transfer to other editor**: choose a journal editor (with *Show all assignments*: any journal manager or section editor) who is not yet assigned. The new editor is assigned in the same user group as the previous one if they belong to it, otherwise (unless *Show all assignments* is checked) as journal editor, otherwise in their section editor group, otherwise in their journal manager group. The previous editor is then removed. Optionally the new editor gets OJS's email *Editor assigned* (`EDITOR_ASSIGN`, editable under *Settings › Emails*).
 - **Remove assignment** (with confirmation): removes the editor's editorial assignments from the submission; other roles (author, reviewer) stay. A warning appears if the submission has no editor left.
 - Changes are written to the submission's activity log and update OJS's "assign an editor" tasks, as when using the participants list.
 
