@@ -1,10 +1,11 @@
-# Checks that need no OJS: PHP syntax and locale keys.
+# Checks that need no OJS: PHP syntax, locale keys and the release package.
 name: CI
 
 on:
   push:
     branches: [main]
   pull_request:
+  workflow_call:
 
 permissions:
   contents: read
@@ -32,3 +33,6 @@ jobs:
           diff <(grep '^msgid' locale/en/locale.po) <(grep '^msgid' locale/de/locale.po)
           diff <(git grep -hoE 'plugins\.generic\.editorAssignments\.[A-Za-z.]+' -- ':!locale' | sort -u) \
                <(grep -oE 'plugins\.generic\.editorAssignments\.[A-Za-z.]+' locale/en/locale.po | sort -u)
+
+      - name: Release package
+        run: dev/package.sh --out dist

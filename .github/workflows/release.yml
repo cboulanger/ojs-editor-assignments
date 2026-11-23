@@ -1,0 +1,61 @@
+# Release: push an annotated tag that matches version.xml, e.g.
+#   git tag -a v1.0.1 -m "One line for the gallery's release notes" && git push origin v1.0.1
+# This runs the checks, builds the gallery package and creates a DRAFT release with
+# the package, its md5 and the gallery XML attached. Test the package, then publish
+# the draft on GitHub; only then is the package URL public (gallery, production).
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  checks:
+    uses: ./.github/workflows/ci.yml
+
+  release:
+    needs: checks
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Tag message
+        id: tag
+        run: |
+          # actions/checkout does not fetch the annotation of the tag
+          git fetch --force origin "refs/tags/${GITHUB_REF_NAME}:refs/tags/${GITHUB_REF_NAME}"
+          if [ "$(git cat-file -t "$GITHUB_REF_NAME")" != tag ]; then
+            echo "::error::${GITHUB_REF_NAME} is not an annotated tag; its message is the gallery's release description"
+            exit 1
+          fi
+          echo "description=$(git tag -l --format='%(contents:subject)' "$GITHUB_REF_NAME")" >> "$GITHUB_OUTPUT"
+
+      - name: Build package
+        env:
+          RELEASE_DESCRIPTION: ${{ steps.tag.outputs.description }}
+        run: dev/package.sh --ref "$GITHUB_REF_NAME" --tag "$GITHUB_REF_NAME" --out dist
+
+      - name: Create draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DESCRIPTION: ${{ steps.tag.outputs.description }}
+        run: |
+          file=$(cd dist && ls editorAssignments-*.tar.gz)
+          md5=$(cut -d' ' -f1 "dist/$file.md5")
+          cat > notes.md <<EOF
+          ${DESCRIPTION}
+
+          Requires OJS 3.5 and PHP 8.2 or later. Unpack \`${file}\` into \`plugins/generic/\` or upload it under *Website Settings › Plugins › Upload a new plugin*, then enable *Editor Assignments* in each journal.
+
+          md5 of the package: \`${md5}\`
+
+          Plugin Gallery: \`gallery-release.xml\` is the \`<release>\` element to add to [plugins.xml](https://github.com/pkp/plugin-gallery) (\`gallery-plugin.xml\`: the whole entry, for the first submission).
+          EOF
+          gh release create "$GITHUB_REF_NAME" --draft --verify-tag \
+            --title "Editor Assignments ${GITHUB_REF_NAME#v}" --notes-file notes.md \
+            "dist/$file" "dist/$file.md5" dist/gallery-release.xml dist/gallery-plugin.xml

@@ -44,6 +44,22 @@ Then enable *Editor Assignments* under *Website Settings › Plugins › Generic
 | `classes/Assignments.php` | Reading and changing editor assignments, activity log, notifications |
 | `mailables/EditorMessage.php` | The email to an editor |
 | `templates/` | Overview, nested submissions table, email form, transfer form |
+| `dev/package.sh`, `dev/gallery/` | Release package and Plugin Gallery entry |
+
+## Releases
+
+The release package contains only what OJS needs (a rule of the PKP Plugin Gallery); `dev/` and the repository files are marked `export-ignore` in [`.gitattributes`](.gitattributes).
+
+1. Set `<release>` (four numbers) and `<date>` in `version.xml` and commit.
+2. Optional: check the package locally with `dev/package.sh` (writes `dist/`).
+3. Push an annotated tag matching the version (`0.1.0.0` → `v0.1.0`, `0.1.0.2` → `v0.1.0-2`). Its first line becomes the release description in the gallery:
+
+   ```sh
+   git tag -a v0.1.0 -m "What changed, in one line" && git push origin v0.1.0
+   ```
+
+4. The [Release workflow](.github/workflows/release.yml) runs the [CI](.github/workflows/ci.yml) checks and creates a **draft** release with `editorAssignments-v0.1.0.tar.gz`, its `.md5`, `gallery-release.xml` and `gallery-plugin.xml`. Test the package, then publish the draft.
+5. Plugin Gallery: open a pull request on [pkp/plugin-gallery](https://github.com/pkp/plugin-gallery) that adds `gallery-release.xml` to the plugin's entry in `plugins.xml` (the first time: `gallery-plugin.xml`). The gallery texts are in [`dev/gallery/`](dev/gallery/).
 
 ## License
 

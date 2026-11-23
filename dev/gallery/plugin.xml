@@ -1,0 +1,15 @@
+	<plugin category="generic" product="editorAssignments">
+		<name locale="en">Editor Assignments</name>
+		<name locale="en_US">Editor Assignments</name>
+		<homepage>https://github.com/cboulanger/ojs-editor-assignments</homepage>
+		<summary locale="en">Shows journal managers which editor is assigned to which active submission, with links to email an editor, transfer a submission to another editor and remove an assignment.</summary>
+		<summary locale="en_US">Shows journal managers which editor is assigned to which active submission, with links to email an editor, transfer a submission to another editor and remove an assignment.</summary>
+		<description locale="en"><![CDATA[@DESCRIPTION@]]></description>
+		<description locale="en_US"><![CDATA[@DESCRIPTION@]]></description>
+		<maintainer>
+			<name>Christian Boulanger</name>
+			<institution>Max Planck Institute for Legal History and Legal Theory</institution>
+			<email>info@bibliograph.org</email>
+		</maintainer>
+@RELEASES@
+	</plugin>
